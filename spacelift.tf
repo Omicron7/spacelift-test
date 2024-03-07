@@ -28,7 +28,7 @@ resource "spacelift_stack" "stacks" {
 resource "spacelift_aws_integration_attachment" "stacks" {
   for_each = spacelift_stack.stacks
 
-  integration_id = data.spacelift_aws_integration.spacelift.integration_id
+  integration_id = data.spacelift_aws_integration.spacelift.id
   stack_id       = each.value.id
 
   read  = true
