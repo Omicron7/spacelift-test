@@ -34,3 +34,16 @@ resource "spacelift_aws_integration_attachment" "stacks" {
   read  = true
   write = true
 }
+
+resource "spacelift_policy" "default_push" {
+  name = "Default Push Policy"
+  body = file("${path.module}/spacelift-policies/default-push.rego")
+  type = "GIT_PUSH"
+}
+
+resource "spacelift_policy_attachment" "stacks" {
+  for_each = spacelift_stack.stacks
+
+  policy_id = spacelift_policy.default_push.id
+  stack_id  = each.value.id
+}
