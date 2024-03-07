@@ -23,3 +23,5 @@ affected_pr {
     filepath := input.pull_request.diff[_]
     startswith(filepath, input.stack.project_root)
 }
+
+sample := true
