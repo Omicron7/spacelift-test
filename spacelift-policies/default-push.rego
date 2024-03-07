@@ -19,9 +19,19 @@ affected {
     startswith(filepath, input.stack.project_root)
 }
 
+affected {
+    filepath := input.push.affected_files[_]
+    glob_pattern := input.stack.additional_project_globs[_]
+    glob.match(glob_pattern, ["/"], filepath)
+}
+
 affected_pr {
     filepath := input.pull_request.diff[_]
     startswith(filepath, input.stack.project_root)
 }
 
-sample := true
+affected_pr {
+    filepath := input.pull_request.diff[_]
+    glob_pattern := input.stack.additional_project_globs[_]
+    glob.match(glob_pattern, ["/"], filepath)
+}
