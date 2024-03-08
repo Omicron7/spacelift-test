@@ -6,8 +6,25 @@ data "spacelift_aws_integration" "spacelift" {
   name = "spacelift-role"
 }
 
-data "spacelift_stack" "root" {
-  stack_id = "spacelift-infrastructure"
+resource "spacelift_stack" "admin" {
+  administrative               = true
+  autodeploy                   = true
+  branch                       = "main"
+  description                  = "Spacelift resources required for Infrastructure deployment"
+  name                         = "Spacelift Infrastructure"
+  project_root                 = "/"
+  protect_from_deletion        = true
+  repository                   = "spacelift-test"
+  terraform_version            = "1.5.7"
+  manage_state                 = true
+  terraform_smart_sanitization = true
+  labels                       = []
+  additional_project_globs     = ["*.tf"]
+}
+
+import {
+  id = "spacelift-infrastructure"
+  to = "spacelift_stack.admin"
 }
 
 resource "spacelift_stack" "stacks" {

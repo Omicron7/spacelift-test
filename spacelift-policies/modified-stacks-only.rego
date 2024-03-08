@@ -7,8 +7,8 @@ track if {
   input.push.branch == input.stack.branch
 }
 
-track if { affected }
-track if { affected_pr }
+propose if { affected }
+propose if { affected_pr }
 
 ignore if {
     not affected
