@@ -22,7 +22,7 @@ resource "spacelift_stack" "stacks" {
   terraform_version            = "1.5.7"
   manage_state                 = false
   terraform_smart_sanitization = true
-  labels                       = ["nobackend", "feature:add_plan_pr_comment"]
+  labels                       = ["nobackend", "feature:add_plan_pr_comment", "folder:${each.value}"]
 }
 
 resource "spacelift_aws_integration_attachment" "stacks" {
