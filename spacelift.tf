@@ -24,7 +24,7 @@ resource "spacelift_stack" "admin" {
 
 import {
   id = "spacelift-infrastructure"
-  to = "spacelift_stack.admin"
+  to = spacelift_stack.admin
 }
 
 resource "spacelift_stack" "stacks" {
