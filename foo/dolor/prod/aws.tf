@@ -14,6 +14,43 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+data "aws_vpc" "main" {
+  tags = { Name = "Main VPC" }
+}
+
+data "aws_subnet" "prod_apps_1a" {
+  vpc_id            = data.aws_vpc.main.id
+  availability_zone = "us-east-1a"
+  tags = {
+    env  = "prod"
+    type = "apps"
+  }
+}
+
+data "aws_security_group" "egress_any_public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+  tags = {
+    type     = "egress"
+    protocol = "any"
+    network  = "public"
+  }
+}
+
+data "aws_security_group" "ingress_ssh_public" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.main.id]
+  }
+  tags = {
+    type     = "ingress"
+    protocol = "ssh"
+    network  = "public"
+  }
+}
+
 resource "tls_private_key" "private_key" {
   algorithm = "RSA"
   rsa_bits  = 4096
@@ -30,6 +67,11 @@ resource "aws_instance" "instances" {
   instance_type               = "t2.micro"
   key_name                    = aws_key_pair.ssh_key.key_name
   associate_public_ip_address = true
+  subnet_id                   = data.aws_subnet.prod_apps_1a.id
+  vpc_security_group_ids = [
+    data.aws_security_group.egress_any_public.id,
+    data.aws_security_group.ingress_ssh_public.id,
+  ]
   tags = {
     Name = "${local.identifier}-${count.index}"
   }
