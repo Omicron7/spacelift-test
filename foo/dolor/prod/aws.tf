@@ -18,12 +18,12 @@ data "aws_vpc" "main" {
   tags = { Name = "Main VPC" }
 }
 
-data "aws_subnet" "prod_apps_1a" {
+data "aws_subnet" "prod_public_1a" {
   vpc_id            = data.aws_vpc.main.id
   availability_zone = "us-east-1a"
   tags = {
     env  = "prod"
-    type = "apps"
+    type = "public"
   }
 }
 
@@ -67,7 +67,7 @@ resource "aws_instance" "instances" {
   instance_type               = "t2.micro"
   key_name                    = aws_key_pair.ssh_key.key_name
   associate_public_ip_address = true
-  subnet_id                   = data.aws_subnet.prod_apps_1a.id
+  subnet_id                   = data.aws_subnet.prod_public_1a.id
   vpc_security_group_ids = [
     data.aws_security_group.egress_any_public.id,
     data.aws_security_group.ingress_ssh_public.id,
