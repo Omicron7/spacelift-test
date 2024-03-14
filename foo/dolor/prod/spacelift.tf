@@ -7,5 +7,5 @@ data "spacelift_stack" "ansible" {
 resource "spacelift_mounted_file" "private_key" {
   stack_id      = data.spacelift_stack.ansible.id
   relative_path = "id_rsa"
-  content       = base64encode(tls_private_key.private_key.private_key_openssh)
+  content       = base64encode(tls_private_key.private_key.private_key_pem)
 }
