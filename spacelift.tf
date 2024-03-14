@@ -29,7 +29,7 @@ import {
 
 resource "spacelift_stack" "stacks" {
   for_each                     = toset(local.paths)
-  administrative               = false
+  administrative               = true
   autodeploy                   = false
   branch                       = "main"
   description                  = "Stack for ${each.value}"
