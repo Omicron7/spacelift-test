@@ -1,3 +1,0 @@
-locals {
-  identifier = "spacelift-test"
-}

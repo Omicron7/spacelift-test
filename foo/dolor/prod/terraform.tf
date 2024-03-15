@@ -23,7 +23,7 @@ provider "aws" {
   region = "us-east-1"
   default_tags {
     tags = {
-      Name       = local.identifier,
+      Name       = "spacelift",
       managed_by = "terraform"
       owner      = "devops-engineering-team@cru.org"
       terraform  = replace(abspath(path.root), "/^.*/(cru-terraform|default)/", "")
